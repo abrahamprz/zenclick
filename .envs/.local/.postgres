@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=zenclick
+POSTGRES_USER=soWceMUBfJVXcwYAKDlNVpVJDlOlIETq
+POSTGRES_PASSWORD=yaLI5lKk9nymYIJdYVAb2cthZ1km8FO4rmMERt8xY270ASE4LGXY9nQZk6PGV55F
