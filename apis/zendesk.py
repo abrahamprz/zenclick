@@ -42,19 +42,6 @@ class ZendeskAPI:
         url = f"{self.base_url}/views/active.json"
         response = get(url, headers=self.headers)
         return response.json()
-    
-    
-    def get_view(self, view_id: str) -> dict:
-        """Gets the view for the API client using Show View.
-        
-        https://developer.zendesk.com/api-reference/ticketing/business-rules/views/#show-view
-
-        Returns:
-            dict: The view for the API client.
-        """
-        url = f"{self.base_url}/views/{view_id}.json"
-        response = get(url, headers=self.headers)
-        return response.json()
 
 
     def get_tickets_in_view(self, view_id: str) -> dict:
