@@ -50,3 +50,19 @@ for ticket in tickets_in_view:
 
 print(dumps(site_selected_tickets, indent=4))
 print(len(site_selected_tickets))
+ 
+subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
+email_template = """
+Dear {principal_name},
+
+I hope this email finds you well.
+
+Please find attached the report of the Chromebook repair activities from {site} for the period between {date_seven_days_ago} and {date_today}.
+
+{report_data}
+
+Thank you for your attention.
+
+Regards,
+IT Department
+"""
