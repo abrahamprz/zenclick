@@ -3,14 +3,15 @@ from base64 import b64encode
 
 
 class ZendeskAPI:
-    
+    """A class for interacting with the Zendesk API.
+
+    Args:
+        api_key (str): The API key for the Zendesk account.
+        subdomain (str): The subdomain of the Zendesk account.
+        email (str): The email address associated with the Zendesk account.
+    """
     def __init__(self, api_key: str, subdomain: str, email:str) -> None:
         """Initializes the API client.
-
-        Args:
-            api_key (str): The API key for the Zendesk account.
-            subdomain (str): The subdomain of the Zendesk account.
-            email (str): The email address associated with the Zendesk account.
         """
         self.api_key = api_key
         self.email = email
@@ -32,12 +33,10 @@ class ZendeskAPI:
     
     
     def get_active_views(self) -> dict:
-        """_summary_
+        """Returns a list of active views.
 
-        https://developer.zendesk.com/api-reference/ticketing/business-rules/views/#list-active-views
-        
         Returns:
-            dict: _description_
+            dict: A dictionary containing the list of active views.
         """
         url = f"{self.base_url}/views/active.json"
         response = get(url, headers=self.headers)
@@ -45,15 +44,13 @@ class ZendeskAPI:
 
 
     def get_tickets_in_view(self, view_id: str) -> dict:
-        """_summary_
+        """Returns a list of tickets in the specified view.
 
-        https://developer.zendesk.com/api-reference/ticketing/business-rules/views/#list-tickets-from-a-view
-        
         Args:
-            view_id (str): _description_
+            view_id (str): The ID of the view.
 
         Returns:
-            dict: _description_
+            dict: A dictionary containing the list of tickets in the view.
         """
         url = f"{self.base_url}/views/{view_id}/tickets.json"
         response = get(url, headers=self.headers)
@@ -61,12 +58,10 @@ class ZendeskAPI:
 
     
     def get_ticket_fields(self) -> dict:
-        """_summary_
+        """Returns a list of ticket fields.
 
-        https://developer.zendesk.com/api-reference/ticketing/tickets/ticket_fields/#list-ticket-fields
-        
         Returns:
-            dict: _description_
+            dict: A dictionary containing the list of ticket fields.
         """
         url = f"{self.base_url}/ticket_fields.json"
         response = get(url, headers=self.headers)
@@ -74,12 +69,13 @@ class ZendeskAPI:
     
     
     def get_user(self, user_id: str) -> dict:
-        """_summary_
+        """Returns the user with the specified ID.
 
-        https://developer.zendesk.com/api-reference/ticketing/users/users/#show-user
-        
+        Args:
+            user_id (str): The ID of the user.
+
         Returns:
-            dict: _description_
+            dict: A dictionary containing the user information.
         """
         url = f"{self.base_url}/users/{user_id}.json"
         response = get(url, headers=self.headers)
