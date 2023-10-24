@@ -58,23 +58,7 @@ class ZendeskAPI:
         url = f"{self.base_url}/views/{view_id}/tickets.json"
         response = get(url, headers=self.headers)
         return response.json()
-    
-    
-    def get_custom_status(self, custom_status_id: str) -> dict:
-        """_summary_
 
-        https://developer.zendesk.com/api-reference/ticketing/tickets/custom_ticket_statuses/#show-custom-ticket-status
-        
-        Args:
-            custom_status_id (str): _description_
-
-        Returns:
-            dict: _description_
-        """
-        url = f"{self.base_url}/custom_statuses/{custom_status_id}.json"
-        response = get(url, headers=self.headers)
-        return response.json()
-    
     
     def get_ticket_fields(self) -> dict:
         """_summary_
@@ -85,5 +69,18 @@ class ZendeskAPI:
             dict: _description_
         """
         url = f"{self.base_url}/ticket_fields.json"
+        response = get(url, headers=self.headers)
+        return response.json()
+    
+    
+    def get_user(self, user_id: str) -> dict:
+        """_summary_
+
+        https://developer.zendesk.com/api-reference/ticketing/users/users/#show-user
+        
+        Returns:
+            dict: _description_
+        """
+        url = f"{self.base_url}/users/{user_id}.json"
         response = get(url, headers=self.headers)
         return response.json()
