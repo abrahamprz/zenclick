@@ -1,3 +1,14 @@
+from os import path as os_path
+from sys import path as sys_path
+
+current = os_path.dirname(os_path.realpath(__file__))
+parent = os_path.dirname(current)
+parent_parent = os_path.dirname(parent)
+# adding the parent directory to the sys.path
+sys_path.append(parent_parent)
+
+# ------------------------------------------------------------------------------
+
 from apis.zendesk import ZendeskAPI
 from json import dumps
 
@@ -32,24 +43,25 @@ categories_values_and_names = {category["value"]: category["name"] for category 
 statuses_ids_and_names = {status["id"]: status["end_user_label"] for status in statuses["custom_statuses"]}
 
 
-site_selected_tickets = []
+site_selected_tickets = {}
 for ticket in tickets_in_view:
+    site = sites_values_and_names[[site for site in ticket['custom_fields'] if site['id'] == site_field_id][0]['value']]
+    if site not in site_selected_tickets:
+        site_selected_tickets[site] = []
+
     site_ticket = {}
-    
     site_ticket["ticket_id"] = ticket["id"]
     site_ticket["ticket_status"] = statuses_ids_and_names[ticket['custom_status_id']]
     site_ticket["ticket_subject"] = ticket["subject"]
     site_ticket["item_tag"] = [item_tag for item_tag in ticket["custom_fields"] if item_tag["id"] == item_tag_field_id][0]["value"]
     site_ticket["requester"] = zendesk_api.get_user(ticket["requester_id"])['user']['name']
     site_ticket["assignee"] = zendesk_api.get_user(ticket['assignee_id'])['user']['name'] if ticket['assignee_id'] else 'NONE'
-    site_ticket["site"] = sites_values_and_names[[site for site in ticket['custom_fields'] if site['id'] == site_field_id][0]['value']]
     site_ticket["requested_date"] = ticket["created_at"]
     site_ticket["category"] = str(categories_values_and_names[[category for category in ticket['custom_fields'] if category['id'] == category_field_id][0]['value']]).split("::")[-1]
-    
-    site_selected_tickets.append(site_ticket)
 
+    site_selected_tickets[site].append(site_ticket)
 print(dumps(site_selected_tickets, indent=4))
-print(len(site_selected_tickets))
+print(sum([len(site_selected_tickets[site]) for site in site_selected_tickets]))
  
 subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
 email_template = """
