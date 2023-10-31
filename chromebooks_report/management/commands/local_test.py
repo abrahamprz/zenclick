@@ -62,7 +62,12 @@ for ticket in tickets_in_view:
     site_selected_tickets[site].append(site_ticket)
 print(dumps(site_selected_tickets, indent=4))
 print(sum([len(site_selected_tickets[site]) for site in site_selected_tickets]))
- 
+
+
+for site in site_selected_tickets:
+    print(site_selected_tickets[site])
+        
+
 subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
 email_template = """
 Dear {principal_name},
@@ -71,7 +76,7 @@ I hope this email finds you well.
 
 Please find attached the report of the Chromebook repair activities from {site} for the period between {date_seven_days_ago} and {date_today}.
 
-{report_data}
+{data_table}
 
 Thank you for your attention.
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Template</title>
+</head>
+<body>
+    <p>Dear {{ principal_name }},</p>
+    <p>I hope this email finds you well.</p>
+    <p>Please find attached the report of the Chromebook repair activities from {{ site }} for the period between {{ date_seven_days_ago }} and {{ date_today }}.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Ticket Status</th>
+                <th>Ticket Subject</th>
+                <th>Item Tag</th>
+                <th>Requester</th>
+                <th>Assignee</th>
+                <th>Requested Date</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data_list %}
+            <tr>
+                <td>{{ item.ticket_id }}</td>
+                <td>{{ item.ticket_status }}</td>
+                <td>{{ item.ticket_subject }}</td>
+                <td>{{ item.item_tag }}</td>
+                <td>{{ item.requester }}</td>
+                <td>{{ item.assignee }}</td>
+                <td>{{ item.requested_date }}</td>
+                <td>{{ item.category }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Thank you for your attention.</p>
+    <p>Regards,</p>
+    <p>IT Department</p>
+</body>
+</html>
