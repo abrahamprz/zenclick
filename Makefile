@@ -4,6 +4,9 @@
 up:
 	docker compose -f local.yml up -d
 
+down:
+	docker compose -f local.yml down
+
 # Example: make run cmd=python manage.py migrate
 run:
 	docker compose -f local.yml run --rm $(shell echo $(cmd))
