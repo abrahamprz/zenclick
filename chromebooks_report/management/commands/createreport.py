@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
+import logging
 
 # ------------------------------------------------------------------------------
 from os import getenv, path as os_path
@@ -30,13 +31,15 @@ class Command(BaseCommand):
             subdomain="",
             email=""
         )
+        self.logger = logging.getLogger(__name__)
     
     
     def handle(self, *args, **options) -> None:
         """Handles the command."""
         
         activity_list = self.get_chromebooks_activity()
-        self.create_report(activity_list)
+        # self.create_report(activity_list)
+        self.logger.info(activity_list)
         
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.stdout.write(
