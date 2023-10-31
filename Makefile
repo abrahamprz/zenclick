@@ -2,7 +2,7 @@
 # make -f Makefile <command>
 
 up:
-	docker compose -f local.yml up
+	docker compose -f local.yml up -d
 
 # Example: make run cmd=python manage.py migrate
 run:
@@ -20,3 +20,6 @@ migrate:
 
 build:
 	docker compose -f local.yml up --build
+
+createreport:
+	docker compose -f local.yml run --rm django python manage.py createreport
