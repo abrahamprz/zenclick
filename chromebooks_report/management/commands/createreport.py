@@ -3,17 +3,8 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
 import logging
+from django.conf import settings
 
-# ------------------------------------------------------------------------------
-from os import getenv, path as os_path
-from sys import path as sys_path
-
-current = os_path.dirname(os_path.realpath(__file__))
-parent = os_path.dirname(current)
-parent_parent = os_path.dirname(parent)
-# adding the parent directory to the sys.path
-sys_path.append(parent_parent)
-# ------------------------------------------------------------------------------
 
 from apis.zendesk import ZendeskAPI
 from json import dumps
@@ -27,9 +18,9 @@ class Command(BaseCommand):
         """Initializes the command."""
         super().__init__()
         self.zendesk_api = ZendeskAPI(
-            api_key="",
-            subdomain="",
-            email=""
+            api_key=settings.ZENDESK_API_KEY,
+            subdomain=settings.ZENDESK_SUBDOMAIN,
+            email=settings.ZENDESK_EMAIL
         )
         self.logger = logging.getLogger(__name__)
     

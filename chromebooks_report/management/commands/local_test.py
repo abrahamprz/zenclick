@@ -1,21 +1,11 @@
-from os import path as os_path
-from sys import path as sys_path
-
-current = os_path.dirname(os_path.realpath(__file__))
-parent = os_path.dirname(current)
-parent_parent = os_path.dirname(parent)
-# adding the parent directory to the sys.path
-sys_path.append(parent_parent)
-
-# ------------------------------------------------------------------------------
-
+from django.conf import settings
 from apis.zendesk import ZendeskAPI
-from json import dumps
+from json import dumps, dump
 
 zendesk_api = ZendeskAPI(
-    api_key="",
-    subdomain="",
-    email=""
+    api_key=settings.ZENDESK_API_KEY,
+    subdomain=settings.ZENDESK_SUBDOMAIN,
+    email=settings.ZENDESK_EMAIL
 )
 
 active_views = zendesk_api.get_active_views()
@@ -25,6 +15,9 @@ search_view_id = next((view["id"] for view in active_views["views"] if view["tit
 
 searched_view = zendesk_api.get_tickets_in_view(search_view_id)
 tickets_in_view = searched_view["tickets"]
+
+with open('tickets_in_view.json', 'w') as f:
+    dump(tickets_in_view, f, indent=4)
 
 ticket_fields = zendesk_api.get_ticket_fields()
 fields = ticket_fields["ticket_fields"]
