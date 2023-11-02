@@ -85,8 +85,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "zenclick.users",
-    "zenclick.chromebooks_report",
     # Your stuff: custom apps go here
+    "chromebooks_report",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -336,3 +336,7 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Zendesk API
+ZENDESK_API_KEY = env("ZENDESK_API_KEY")
+ZENDESK_SUBDOMAIN = env("ZENDESK_SUBDOMAIN")
+ZENDESK_EMAIL = env("ZENDESK_EMAIL")
