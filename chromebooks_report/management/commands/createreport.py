@@ -5,6 +5,18 @@ from datetime import datetime, timedelta
 import logging
 from django.conf import settings
 
+# ------------------------------------------------------------------------------
+
+from os import path as os_path
+from sys import path as sys_path
+
+current = os_path.dirname(os_path.realpath(__file__))
+parent = os_path.dirname(current)
+parent_parent = os_path.dirname(parent)
+# adding the parent directory to the sys.path
+sys_path.append(parent_parent)
+
+# ------------------------------------------------------------------------------
 
 from apis.zendesk import ZendeskAPI
 from json import dumps
