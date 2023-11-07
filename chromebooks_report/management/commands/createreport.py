@@ -41,7 +41,7 @@ class Command(BaseCommand):
         """Handles the command."""
         
         activity_list = self.get_chromebooks_activity()
-        # self.create_report(activity_list)
+        self.create_report(activity_list)
         self.logger.info(activity_list)
         
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -91,6 +91,8 @@ class Command(BaseCommand):
             site_ticket["category"] = str(categories_values_and_names[[category for category in ticket['custom_fields'] if category['id'] == category_field_id][0]['value']]).split("::")[-1]
 
             site_selected_tickets[site].append(site_ticket)
+        
+        return site_selected_tickets
 
     
     def create_report(self, site_tickets: list) -> None:
