@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
 import logging
@@ -42,7 +43,7 @@ class Command(BaseCommand):
         
         activity_list = self.get_chromebooks_activity()
         self.create_report(activity_list)
-        self.logger.info(activity_list)
+        # self.logger.info(activity_list)
         
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.stdout.write(
@@ -107,11 +108,11 @@ class Command(BaseCommand):
                     date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
                     date_today=datetime.now().strftime("%Y-%m-%d")
                 ),
-                message="", # the message is in html format
+                message="TEST EMAIL", # the message is in html format
                 from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
                 recipient_list=[principal_email],
                 html_message=render_to_string(
-                    template_name="chromeboks_report_template.html",
+                    template_name="chromebooks_report_template.html",
                     context={
                         "principal_name": principal_name,
                         "site": site,
