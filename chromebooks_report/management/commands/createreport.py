@@ -85,21 +85,17 @@ class Command(BaseCommand):
         """Creates a report of Chromebooks that need to be repaired."""
         subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
         principal_name = "principal_name placeholder"
-        principal_email = "principal_email placeholder"
+        principal_email = settings.TEST_RECIPIENT_LIST
         for site in site_tickets:
             send_mail(
                 subject=subject.format(
                     site=site,
-                    date_seven_days_ago="",
-                    date_today=""
+                    date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+                    date_today=datetime.now().strftime("%Y-%m-%d")
                 ),
                 message="", # the message is in html format
-                from_email="",
+                from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
                 recipient_list=[principal_email],
-                fail_silently=False,
-                auth_user="",
-                auth_password="",
-                connection=None,
                 html_message=render_to_string(
                     template_name="chromeboks_report_template.html",
                     context={
