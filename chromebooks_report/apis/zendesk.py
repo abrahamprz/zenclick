@@ -10,9 +10,9 @@ class ZendeskAPI:
         subdomain (str): The subdomain of the Zendesk account.
         email (str): The email address associated with the Zendesk account.
     """
-    def __init__(self, api_key: str, subdomain: str, email:str) -> None:
-        """Initializes the API client.
-        """
+
+    def __init__(self, api_key: str, subdomain: str, email: str) -> None:
+        """Initializes the API client."""
         self.api_key = api_key
         self.email = email
         self.base_url = f"https://{subdomain}.zendesk.com/api/v2"
@@ -20,8 +20,7 @@ class ZendeskAPI:
             "Authorization": f"Basic {self._get_encoded_auth_string()}",
             "Content-Type": "application/json",
         }
-    
-    
+
     def _get_encoded_auth_string(self) -> str:
         """Returns the encoded authentication string for the API client.
 
@@ -30,8 +29,7 @@ class ZendeskAPI:
         """
         auth_string = f"{self.email}/token:{self.api_key}"
         return b64encode(auth_string.encode()).decode()
-    
-    
+
     def get_active_views(self) -> dict:
         """Returns a list of active views.
 
@@ -41,7 +39,6 @@ class ZendeskAPI:
         url = f"{self.base_url}/views/active.json"
         response = get(url, headers=self.headers)
         return response.json()
-
 
     def get_tickets_in_view(self, view_id: str) -> dict:
         """Returns a list of tickets in the specified view.
@@ -56,7 +53,6 @@ class ZendeskAPI:
         response = get(url, headers=self.headers)
         return response.json()
 
-    
     def get_ticket_fields(self) -> dict:
         """Returns a list of ticket fields.
 
@@ -66,8 +62,7 @@ class ZendeskAPI:
         url = f"{self.base_url}/ticket_fields.json"
         response = get(url, headers=self.headers)
         return response.json()
-    
-    
+
     def get_user(self, user_id: str) -> dict:
         """Returns the user with the specified ID.
 
