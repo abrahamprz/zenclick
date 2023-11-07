@@ -336,7 +336,3 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
-# Zendesk API
-ZENDESK_API_KEY = env("ZENDESK_API_KEY")
-ZENDESK_SUBDOMAIN = env("ZENDESK_SUBDOMAIN")
-ZENDESK_EMAIL = env("ZENDESK_EMAIL")
