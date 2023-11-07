@@ -12,3 +12,19 @@ REDIS_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=enuXnURlqYnSqvAuiydVYABxwRZDISvW
 CELERY_FLOWER_PASSWORD=7ewPIB5sPtqNeze7GRBgSTObImLAbQ9DS04cslMlGXMAJsEbflA8A1IXJsvX1DJc
+
+# Zendesk API
+# ------------------------------------------------------------------------------
+ZENDESK_API_KEY=<your-zendesk_api_key>
+ZENDESK_SUBDOMAIN=<your-zendesk_subdomain>
+ZENDESK_EMAIL=<your-zendesk_email>
+
+TEST_RECIPIENT_LIST=<your-test_recipient_list>
+
+# Email
+# ------------------------------------------------------------------------------
+DJANGO_SERVER_EMAIL=<your-django_server_email>
+DJANGO_DEFAULT_FROM_EMAIL=<your-django_default_from_email>
+
+MAILGUN_API_KEY=<your-mailgun_api_key>
+MAILGUN_DOMAIN=<your-mailgun_domain>
