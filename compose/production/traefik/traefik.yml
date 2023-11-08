@@ -28,6 +28,11 @@ entryPoints:
 #       httpChallenge:
 #         entryPoint: web
 
+tls:
+  certificates:
+    - certFile: /etc/certs/cert.crt
+      keyFile: /etc/certs/cert.key
+
 http:
   routers:
     web-secure-router:

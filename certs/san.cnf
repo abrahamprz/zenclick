@@ -1,0 +1,15 @@
+[ req ]
+default_bits       = 2048
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+prompt = no
+[ req_distinguished_name ]
+countryName                 = US
+stateOrProvinceName         = AZ
+localityName               = San Luis
+organizationName           = GESD32
+commonName                 = zenclick.gesd32.net
+[ req_ext ]
+subjectAltName = @alt_names
+[alt_names]
+DNS.1   = www.zenclick.gesd32.net
