@@ -5,7 +5,7 @@ up:
 	docker compose -f production.yml up -d
 
 build:
-	docker compose -f production.yml up --build
+	docker compose -f production.yml build
 
 down:
 	docker compose -f production.yml down
@@ -33,7 +33,7 @@ up_local:
 	docker compose -f local.yml up -d
 
 build_local:
-	docker compose -f local.yml up --build
+	docker compose -f local.yml build
 
 down_local:
 	docker compose -f local.yml down
