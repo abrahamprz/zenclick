@@ -12,11 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from zenclick.users.forms import UserAdminChangeForm
 from zenclick.users.models import User
 from zenclick.users.tests.factories import UserFactory
-from zenclick.users.views import (
-    UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
-)
+from zenclick.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 

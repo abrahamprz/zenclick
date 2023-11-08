@@ -1,15 +1,15 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from django.core.mail import send_mail
-from datetime import datetime, timedelta
 import logging
-from django.conf import settings
-
-# ------------------------------------------------------------------------------
-
+from datetime import datetime, timedelta
 from os import path as os_path
 from sys import path as sys_path
+
+from apis.zendesk import ZendeskAPI
+from django.conf import settings
+from django.core.mail import send_mail
+from django.core.management.base import BaseCommand
+from django.template.loader import render_to_string
+
+# ------------------------------------------------------------------------------
 
 current = os_path.dirname(os_path.realpath(__file__))
 parent = os_path.dirname(current)
@@ -18,9 +18,6 @@ parent_parent = os_path.dirname(parent)
 sys_path.append(parent_parent)
 
 # ------------------------------------------------------------------------------
-
-from apis.zendesk import ZendeskAPI
-from json import dumps
 
 
 class Command(BaseCommand):

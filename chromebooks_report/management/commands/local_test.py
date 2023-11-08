@@ -1,5 +1,11 @@
+from json import dump, dumps
 from os import path as os_path
 from sys import path as sys_path
+
+from apis.zendesk import ZendeskAPI
+from django.conf import settings
+
+# ------------------------------------------------------------------------------
 
 current = os_path.dirname(os_path.realpath(__file__))
 parent = os_path.dirname(current)
@@ -8,10 +14,6 @@ parent_parent = os_path.dirname(parent)
 sys_path.append(parent_parent)
 
 # ------------------------------------------------------------------------------
-
-from django.conf import settings
-from apis.zendesk import ZendeskAPI
-from json import dumps, dump
 
 zendesk_api = ZendeskAPI(
     api_key=settings.ZENDESK_API_KEY, subdomain=settings.ZENDESK_SUBDOMAIN, email=settings.ZENDESK_EMAIL
@@ -86,7 +88,7 @@ Dear {principal_name},
 
 I hope this email finds you well.
 
-Please find attached the report of the Chromebook repair activities from {site} for the period between {date_seven_days_ago} and {date_today}.
+"Attached is the {site} Chromebook repair report for {date_seven_days_ago} to {date_today}."
 
 {data_table}
 
