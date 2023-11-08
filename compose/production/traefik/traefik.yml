@@ -42,7 +42,7 @@ http:
       middlewares:
         - csrf
       service: django
-      tls:
+      tls: {}
         # https://docs.traefik.io/master/routing/routers/#certresolver
         # certResolver: letsencrypt
 
@@ -51,7 +51,7 @@ http:
       entryPoints:
         - flower
       service: flower
-      tls:
+      tls: {}
         # https://docs.traefik.io/master/routing/routers/#certresolver
         # certResolver: letsencrypt
 
