@@ -39,7 +39,7 @@ http:
       service: django
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
+        # certResolver: letsencrypt
 
     flower-secure-router:
       rule: 'Host(`zenclick.gesd32.net`)'
@@ -48,7 +48,7 @@ http:
       service: flower
       tls:
         # https://docs.traefik.io/master/routing/routers/#certresolver
-        certResolver: letsencrypt
+        # certResolver: letsencrypt
 
   middlewares:
     csrf:
