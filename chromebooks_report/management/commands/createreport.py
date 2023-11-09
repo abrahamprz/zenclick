@@ -4,10 +4,9 @@ from os import path as os_path
 from sys import path as sys_path
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
-from django.core.validators import validate_email
+from django.db.models import Q
 from django.template.loader import render_to_string
 
 from recipients.models import SchoolRecipient
@@ -114,12 +113,12 @@ class Command(BaseCommand):
         for site in site_tickets:
             try:
                 principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
-                principal_email = settings.TEST_RECIPIENT_LIST
-                validate_email(principal_email)
+                principal_email = [
+                    p.recipient_email
+                    for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
+                ]
             except SchoolRecipient.DoesNotExist:
-                principal_name = "MISSING PRINCIPAL NAME"
-            except ValidationError:
-                principal_name = "INVALID PRINCIPAL EMAIL"
+                principal_name = "MISSING PRINCIPAL DATA"
                 continue
             send_mail(
                 subject=subject.format(
@@ -129,7 +128,7 @@ class Command(BaseCommand):
                 ),
                 message="",  # the message is in html format
                 from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
-                recipient_list=[principal_email],
+                recipient_list=principal_email,
                 html_message=render_to_string(
                     template_name="chromebooks_report_template.html",
                     context={
