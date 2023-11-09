@@ -4,8 +4,10 @@ from os import path as os_path
 from sys import path as sys_path
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
+from django.core.validators import validate_email
 from django.template.loader import render_to_string
 
 from recipients.models import SchoolRecipient
@@ -113,8 +115,12 @@ class Command(BaseCommand):
             try:
                 principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
                 principal_email = settings.TEST_RECIPIENT_LIST
+                validate_email(principal_email)
             except SchoolRecipient.DoesNotExist:
                 principal_name = "MISSING PRINCIPAL NAME"
+            except ValidationError:
+                principal_name = "INVALID PRINCIPAL EMAIL"
+                continue
             send_mail(
                 subject=subject.format(
                     site=site,
