@@ -11,4 +11,4 @@ class SchoolRecipient(models.Model):
         unique_together = ("school_name", "recipient_name", "recipient_email")
 
     def __str__(self):
-        return f"{self.school_name} - {self.recipient_name}"
+        return f"{self.school_name} - {self.recipient_name} ({self.recipient_email})"
