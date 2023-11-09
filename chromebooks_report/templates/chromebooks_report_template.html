@@ -51,9 +51,13 @@
       <tbody>
         {% for item in data_list %}
           <tr>
-            <td>{{ item.ticket_id }}</td>
+            <td>
+              <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_id }}</a>
+            </td>
             <td>{{ item.ticket_status }}</td>
-            <td>{{ item.ticket_subject }}</td>
+            <td>
+              <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_subject }}</a>
+            </td>
             <td>{{ item.item_tag }}</td>
             <td>{{ item.requester }}</td>
             <td>{{ item.assignee }}</td>
