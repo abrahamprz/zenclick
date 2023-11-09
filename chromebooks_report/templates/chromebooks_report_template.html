@@ -10,18 +10,29 @@
     <p>
       Please find attached the report of the Chromebook repair activities from {{ site }} for the period between {{ date_seven_days_ago }} and {{ date_today }}.
     </p>
-    <style>
+    <style type="text/css">
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+      }
+
       table {
         border-collapse: collapse;
-        /* This makes the borders collapse into a single line */
+        width: 100%;
+        font-size: 14px;
+        color: #333333;
       }
 
       th,
       td {
-        border: 1px solid black;
-        /* This adds a border to each cell */
-        padding: 5px;
-        /* This adds some padding inside each cell */
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
       }
     </style>
     <table>
