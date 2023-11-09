@@ -89,7 +89,8 @@ class Command(BaseCommand):
             site_ticket["assignee"] = (
                 self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
             )
-            site_ticket["requested_date"] = ticket["created_at"]
+            date_obj = datetime.strptime(__date_string=ticket["created_at"], __format="%Y-%m-%dT%H:%M:%SZ")
+            site_ticket["requested_date"] = date_obj.strftime("%m-%d-%Y")
             site_ticket["category"] = str(
                 categories_values_and_names[
                     [category for category in ticket["custom_fields"] if category["id"] == category_field_id][0][
