@@ -19,8 +19,6 @@ ZENDESK_API_KEY=<your-zendesk_api_key>
 ZENDESK_SUBDOMAIN=<your-zendesk_subdomain>
 ZENDESK_EMAIL=<your-zendesk_email>
 
-TEST_RECIPIENT_LIST=<your-test_recipient_list>
-
 # Email
 # ------------------------------------------------------------------------------
 DJANGO_SERVER_EMAIL=<your-django_server_email>
