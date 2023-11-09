@@ -88,9 +88,9 @@ class Command(BaseCommand):
                 item_tag for item_tag in ticket["custom_fields"] if item_tag["id"] == item_tag_field_id
             ][0]["value"]
             site_ticket["requester"] = self.zendesk_api.get_user(ticket["requester_id"])["user"]["name"]
-            site_ticket["assignee"] = (
-                self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
-            )
+            # site_ticket["assignee"] = (
+            #     self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
+            # )
             date_obj = datetime.strptime(ticket["created_at"], "%Y-%m-%dT%H:%M:%SZ")
             site_ticket["requested_date"] = date_obj.strftime("%m-%d-%Y")
             site_ticket["category"] = str(
