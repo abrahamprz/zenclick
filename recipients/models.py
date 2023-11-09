@@ -3,9 +3,9 @@ from django.db import models
 
 # Create your models here.
 class SchoolRecipient(models.Model):
-    school_name = models.CharField(max_length=255)
-    recipient_name = models.CharField(max_length=255)
-    recipient_email = models.EmailField()
+    school_name = models.CharField(max_length=255, blank=False)
+    recipient_name = models.CharField(max_length=255, blank=False)
+    recipient_email = models.EmailField(blank=False)
 
     class Meta:
         unique_together = ("school_name", "recipient_name", "recipient_email")
