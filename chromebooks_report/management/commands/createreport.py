@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 
+from recipients.models import SchoolRecipient
+
 # ------------------------------------------------------------------------------
 
 current = os_path.dirname(os_path.realpath(__file__))
@@ -89,7 +91,7 @@ class Command(BaseCommand):
             site_ticket["assignee"] = (
                 self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
             )
-            date_obj = datetime.strptime(__date_string=ticket["created_at"], __format="%Y-%m-%dT%H:%M:%SZ")
+            date_obj = datetime.strptime(ticket["created_at"], "%Y-%m-%dT%H:%M:%SZ")
             site_ticket["requested_date"] = date_obj.strftime("%m-%d-%Y")
             site_ticket["category"] = str(
                 categories_values_and_names[
@@ -106,16 +108,19 @@ class Command(BaseCommand):
     def create_report(self, site_tickets: list) -> None:
         """Creates a report of Chromebooks that need to be repaired."""
         subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
-        principal_name = "principal_name placeholder"
-        principal_email = settings.TEST_RECIPIENT_LIST
         for site in site_tickets:
+            try:
+                principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
+                principal_email = settings.TEST_RECIPIENT_LIST
+            except SchoolRecipient.DoesNotExist:
+                principal_name = "MISSING PRINCIPAL NAME"
             send_mail(
                 subject=subject.format(
                     site=site,
                     date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
                     date_today=datetime.now().strftime("%Y-%m-%d"),
                 ),
-                message="TEST EMAIL",  # the message is in html format
+                message="",  # the message is in html format
                 from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
                 recipient_list=[principal_email],
                 html_message=render_to_string(
