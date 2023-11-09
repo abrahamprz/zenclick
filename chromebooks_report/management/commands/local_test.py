@@ -2,7 +2,6 @@ from json import dump, dumps
 from os import path as os_path
 from sys import path as sys_path
 
-from apis.zendesk import ZendeskAPI
 from django.conf import settings
 
 # ------------------------------------------------------------------------------
@@ -14,6 +13,8 @@ parent_parent = os_path.dirname(parent)
 sys_path.append(parent_parent)
 
 # ------------------------------------------------------------------------------
+
+from apis.zendesk import ZendeskAPI  # noqa
 
 zendesk_api = ZendeskAPI(
     api_key=settings.ZENDESK_API_KEY, subdomain=settings.ZENDESK_SUBDOMAIN, email=settings.ZENDESK_EMAIL

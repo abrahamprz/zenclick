@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from os import path as os_path
 from sys import path as sys_path
 
-from apis.zendesk import ZendeskAPI
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
@@ -18,6 +17,8 @@ parent_parent = os_path.dirname(parent)
 sys_path.append(parent_parent)
 
 # ------------------------------------------------------------------------------
+
+from apis.zendesk import ZendeskAPI  # noqa
 
 
 class Command(BaseCommand):
