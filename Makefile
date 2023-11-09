@@ -10,6 +10,15 @@ build:
 down:
 	docker compose -f production.yml down
 
+restart:
+	docker compose -f production.yml down
+	docker compose -f production.yml up -d
+
+rebuild:
+	docker compose -f production.yml down
+	docker compose -f production.yml build
+	docker compose -f production.yml up -d
+
 # Example: make run cmd=python manage.py migrate
 run:
 	docker compose -f production.yml run --rm $(shell echo $(cmd))
@@ -37,6 +46,15 @@ build_local:
 
 down_local:
 	docker compose -f local.yml down
+
+restart_local:
+	docker compose -f local.yml down
+	docker compose -f local.yml up -d
+
+rebuild_local:
+	docker compose -f local.yml down
+	docker compose -f local.yml build
+	docker compose -f local.yml up -d
 
 # Example: make run_local cmd=python manage.py migrate
 run_local:
