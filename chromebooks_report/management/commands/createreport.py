@@ -108,6 +108,7 @@ class Command(BaseCommand):
     def create_report(self, site_tickets: list) -> None:
         """Creates a report of Chromebooks that need to be repaired."""
         subject = "{site} Chromebooks report {date_seven_days_ago} - {date_today}"
+        url_base = f"https://{settings.ZENDESK_SUBDOMAIN}.zendesk.com/agent/tickets/"
         for site in site_tickets:
             try:
                 principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
@@ -131,6 +132,7 @@ class Command(BaseCommand):
                         "date_seven_days_ago": (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
                         "date_today": datetime.now().strftime("%Y-%m-%d"),
                         "data_list": site_tickets[site],
+                        "base_url": url_base,
                     },
                 ),
             )
