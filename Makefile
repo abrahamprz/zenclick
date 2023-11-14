@@ -19,6 +19,9 @@ rebuild:
 	docker compose -f production.yml build
 	docker compose -f production.yml up -d
 
+shell:
+    docker compose -f production.yml run --rm django /bin/sh
+
 # Example: make run cmd=python manage.py migrate
 run:
 	docker compose -f production.yml run --rm $(shell echo $(cmd))
@@ -35,6 +38,9 @@ migrate:
 
 createreport:
 	docker compose -f production.yml run --rm django python manage.py createreport
+
+collectstatic:
+    docker compose -f production.yml run --rm django python manage.py collectstatic --no-input
 
 # Local commands
 
@@ -56,6 +62,9 @@ rebuild_local:
 	docker compose -f local.yml build
 	docker compose -f local.yml up -d
 
+shell_local:
+    docker compose -f local.yml run --rm django /bin/sh
+
 # Example: make run_local cmd=python manage.py migrate
 run_local:
 	docker compose -f local.yml run --rm $(shell echo $(cmd))
@@ -72,3 +81,6 @@ migrate_local:
 
 createreport_local:
 	docker compose -f local.yml run --rm django python manage.py createreport
+
+collectstatic_local:
+    docker compose -f local.yml run --rm django python manage.py collectstatic --no-input
