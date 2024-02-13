@@ -114,7 +114,8 @@ class Command(BaseCommand):
         url_base = f"https://{settings.ZENDESK_SUBDOMAIN}.zendesk.com/agent/tickets/"
         for site in site_tickets:
             try:
-                principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
+                # principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
+                principal_name = 'Test'
                 principal_email = [
                     p.recipient_email
                     for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
