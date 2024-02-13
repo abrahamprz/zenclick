@@ -1,9 +1,8 @@
 from base64 import b64encode
+from time import sleep as time_sleep
 
 from requests import get
 
-from time import sleep as time_sleep
-from json import dumps as json_dumps
 
 class ZendeskAPI:
     """A class for interacting with the Zendesk API.
@@ -60,15 +59,15 @@ class ZendeskAPI:
             data = response.json()
 
             # Add the tickets from this page to our list
-            tickets.extend(data['tickets'])
+            tickets.extend(data["tickets"])
 
             # Get the next page URL, if it exists
-            url = data['next_page']
+            url = data["next_page"]
 
             # To avoid hitting the rate limit, pause for a second before the next request
             time_sleep(1)
-            
-        return {'tickets': tickets}
+
+        return {"tickets": tickets}
 
     def get_ticket_fields(self) -> dict:
         """Returns a list of ticket fields.

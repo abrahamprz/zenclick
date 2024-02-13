@@ -1,4 +1,4 @@
-import logging
+import logging  # noqa
 from datetime import datetime, timedelta
 from os import path as os_path
 from sys import path as sys_path
@@ -11,7 +11,6 @@ from django.template.loader import render_to_string
 
 from recipients.models import SchoolRecipient
 
-import logging # noqa
 logger = logging.getLogger(__name__)  # noqa
 # ------------------------------------------------------------------------------
 
