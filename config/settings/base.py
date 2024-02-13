@@ -81,7 +81,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "drf_spectacular",
-    'djando_celery_results',
+    'django_celery_results',
 ]
 
 LOCAL_APPS = [
