@@ -115,37 +115,33 @@ class Command(BaseCommand):
         url_base = f"https://{settings.ZENDESK_SUBDOMAIN}.zendesk.com/agent/tickets/"
         for site in site_tickets:
             try:
-                principal_info = [
+                recipient_info = [
                     (p.recipient_email, p.recipient_name)
                     for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
                 ]
-
-                principal_email = [info[0] for info in principal_info]
-                principal_name = [info[1] for info in principal_info]
-                self.stdout.write(f"Recipient info: {principal_email} - {principal_name}")
             except SchoolRecipient.DoesNotExist:
-                principal_name = "MISSING PRINCIPAL DATA"
                 logger.error(f"Principal data for {site} is missing.")
                 continue
-            send_mail(
-                subject=subject.format(
-                    site=site,
-                    date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-                    date_today=datetime.now().strftime("%Y-%m-%d"),
-                ),
-                message="",  # the message is in html format
-                from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
-                recipient_list=principal_email,
-                html_message=render_to_string(
-                    template_name="chromebooks_report_template.html",
-                    context={
-                        "principal_name": principal_name,
-                        "site": site,
-                        "date_seven_days_ago": (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-                        "date_today": datetime.now().strftime("%Y-%m-%d"),
-                        "data_list": site_tickets[site],
-                        "base_url": url_base,
-                        "tickets_count": len(site_tickets[site]),
-                    },
-                ),
-            )
+            for recipient_email, recipient_name in recipient_info:
+                send_mail(
+                    subject=subject.format(
+                        site=site,
+                        date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+                        date_today=datetime.now().strftime("%Y-%m-%d"),
+                    ),
+                    message="",  # the message is in html format
+                    from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
+                    recipient_list=[recipient_email],
+                    html_message=render_to_string(
+                        template_name="chromebooks_report_template.html",
+                        context={
+                            "principal_name": recipient_name,
+                            "site": site,
+                            "date_seven_days_ago": (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+                            "date_today": datetime.now().strftime("%Y-%m-%d"),
+                            "data_list": site_tickets[site],
+                            "base_url": url_base,
+                            "tickets_count": len(site_tickets[site]),
+                        },
+                    ),
+                )
