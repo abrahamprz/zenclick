@@ -120,7 +120,7 @@ class Command(BaseCommand):
                 ]
 
                 principal_email = [info[0] for info in principal_info]
-                principal_name = [info[1] for info in principal_info]
+                principal_name = [info[1][0] for info in principal_info]
             except SchoolRecipient.DoesNotExist:
                 principal_name = "MISSING PRINCIPAL DATA"
                 logger.error(f"Principal data for {site} is missing.")
