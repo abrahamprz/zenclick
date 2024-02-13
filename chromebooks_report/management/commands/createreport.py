@@ -115,7 +115,7 @@ class Command(BaseCommand):
         for site in site_tickets:
             try:
                 principal_info = [
-                    (p.recipient_email, p.principal_name)
+                    (p.recipient_email, p.recipient_name)
                     for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
                 ]
 
