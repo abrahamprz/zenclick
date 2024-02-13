@@ -121,7 +121,8 @@ class Command(BaseCommand):
                 ]
 
                 principal_email = [info[0] for info in principal_info]
-                principal_name = [info[1] for info in principal_info][0]
+                principal_name = [info[1] for info in principal_info]
+                self.stdout.write(f"Recipient info: {principal_email} - {principal_name}")
             except SchoolRecipient.DoesNotExist:
                 principal_name = "MISSING PRINCIPAL DATA"
                 logger.error(f"Principal data for {site} is missing.")
