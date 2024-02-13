@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
         searched_view = self.zendesk_api.get_tickets_in_view(search_view_id)
         tickets_in_view = searched_view["tickets"]
-        self.logger.info(f"Tickets in view: {tickets_in_view}")
+        self.stdout.write(f"Tickets in view: {tickets_in_view}")
 
         ticket_fields = self.zendesk_api.get_ticket_fields()
         fields = ticket_fields["ticket_fields"]
