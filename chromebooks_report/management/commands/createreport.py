@@ -114,12 +114,13 @@ class Command(BaseCommand):
         url_base = f"https://{settings.ZENDESK_SUBDOMAIN}.zendesk.com/agent/tickets/"
         for site in site_tickets:
             try:
-                # principal_name = SchoolRecipient.objects.get(school_name=site).recipient_name
-                principal_name = 'Test'
-                principal_email = [
-                    p.recipient_email
+                principal_info = [
+                    (p.recipient_email, p.principal_name)
                     for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
                 ]
+
+                principal_email = [info[0] for info in principal_info]
+                principal_name = [info[1] for info in principal_info]
             except SchoolRecipient.DoesNotExist:
                 principal_name = "MISSING PRINCIPAL DATA"
                 logger.error(f"Principal data for {site} is missing.")
