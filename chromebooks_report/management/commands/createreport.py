@@ -11,6 +11,8 @@ from django.template.loader import render_to_string
 
 from recipients.models import SchoolRecipient
 
+import logging # noqa
+logger = logging.getLogger(__name__)  # noqa
 # ------------------------------------------------------------------------------
 
 current = os_path.dirname(os_path.realpath(__file__))
@@ -119,6 +121,7 @@ class Command(BaseCommand):
                 ]
             except SchoolRecipient.DoesNotExist:
                 principal_name = "MISSING PRINCIPAL DATA"
+                logger.error(f"Principal data for {site} is missing.")
                 continue
             send_mail(
                 subject=subject.format(
