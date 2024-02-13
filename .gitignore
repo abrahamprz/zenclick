@@ -1,6 +1,10 @@
 # Custom template
 # Ignores file with tickets
 tickets_in_view.json
+# Ignores specific files from certs folder
+certs/*.crt
+certs/*.key
+certs/*.csr
 
 ### Python template
 # Byte-compiled / optimized / DLL files
