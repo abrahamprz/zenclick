@@ -144,6 +144,7 @@ class Command(BaseCommand):
                         "date_today": datetime.now().strftime("%Y-%m-%d"),
                         "data_list": site_tickets[site],
                         "base_url": url_base,
+                        "tickets_count": len(site_tickets[site]),
                     },
                 ),
             )
