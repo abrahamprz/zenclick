@@ -26,7 +26,8 @@ from apis.zendesk import ZendeskAPI  # noqa
 
 TICKET_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-DATE_FORMAT = "%m-%d-%Y"
+DATE_FORMAT_MDY = "%m-%d-%Y"
+DATE_FORMAT_YMD = "%Y-%m-%d"
 
 
 class Command(BaseCommand):
@@ -93,14 +94,16 @@ class Command(BaseCommand):
             ][0]["value"]
             creation_date_obj = datetime.strptime(ticket["created_at"], TICKET_DATE_FORMAT)
             update_date_obj = datetime.strptime(ticket["updated_at"], TICKET_DATE_FORMAT)
-            site_ticket["requested_date"] = f"{creation_date_obj.strftime(DATE_FORMAT)}"
-            site_ticket["updated_date"] = f"{update_date_obj.strftime(DATE_FORMAT)}"
+            site_ticket["requested_date"] = f"{creation_date_obj.strftime(DATE_FORMAT_MDY)}"
+            site_ticket["updated_date"] = f"{update_date_obj.strftime(DATE_FORMAT_MDY)}"
 
             site_selected_tickets[site].append(site_ticket)
 
         # Sort the tickets in each site by updated_date
         for site, tickets in site_selected_tickets.items():
-            site_selected_tickets[site] = sorted(tickets, key=lambda t: t["updated_date"], reverse=True)
+            site_selected_tickets[site] = sorted(
+                tickets, key=lambda t: datetime.strptime(t["updated_date"], DATE_FORMAT_YMD), reverse=True
+            )
 
         return site_selected_tickets
 
@@ -124,7 +127,7 @@ class Command(BaseCommand):
                 send_mail(
                     subject=subject.format(
                         site=site,
-                        date_today=datetime.now().strftime(DATE_FORMAT),
+                        date_today=datetime.now().strftime(DATE_FORMAT_MDY),
                     ),
                     message="",  # the message is in html format
                     from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
