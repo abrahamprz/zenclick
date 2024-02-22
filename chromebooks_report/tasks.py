@@ -3,7 +3,7 @@ from django.core.management import call_command
 
 
 @shared_task
-def create_weekly_repair_report():
+def create_weekly_general_report():
     call_command("generalreport")
 
 
