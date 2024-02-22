@@ -98,11 +98,15 @@ class Command(BaseCommand):
 
             site_selected_tickets[site].append(site_ticket)
 
+        # Sort the tickets in each site by updated_date
+        for site, tickets in site_selected_tickets.items():
+            site_selected_tickets[site] = sorted(tickets, key=lambda t: t["updated_date"], reverse=True)
+
         return site_selected_tickets
 
     def create_report(self, site_tickets: list) -> None:
         """Creates a report of Chromebooks that need to be repaired."""
-        subject = "{site} Chromebooks report {date_today}"
+        subject = "{site} LOST MODE Chromebooks report {date_today}"
         url_base = f"https://{settings.ZENDESK_SUBDOMAIN}.zendesk.com/agent/tickets/"
         for site in site_tickets:
             try:
