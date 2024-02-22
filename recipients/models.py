@@ -9,18 +9,18 @@ class SchoolRecipient(models.Model):
     ]
 
     SCHOOLS = [
-        ("ADS", "Arizona Desert Elementary"),
-        ("CCS", "Cesar Chavez Elementary"),
-        ("DVS", "Desert View Elementary"),
-        ("EPS", "Ed Pastor Elementary"),
-        ("GES", "Gadsden Elementary School"),
-        ("RCS", "Rio Colorado Elementary"),
-        ("SLMS", "San Luis Middle School"),
-        ("SLPS", "San Luis Preschool"),
-        ("SWJH", "Southwest Junior High"),
-        ("DAC", "District Administrative Office"),
-        ("ALL", "All sites"),
-        ("TEST", "Test site"),
+        ("ADS", "ADS"),
+        ("CCS", "CCS"),
+        ("DVS", "DVS"),
+        ("EPS", "EPS"),
+        ("GES", "GES"),
+        ("RCS", "RCS"),
+        ("SLMS", "SLMS"),
+        ("SLPS", "SLPS"),
+        ("SWJH", "SWJH"),
+        ("DAC", "DAC"),
+        ("ALL", "ALL"),
+        ("TEST", "TEST"),
     ]
 
     school_name = models.CharField(max_length=4, choices=SCHOOLS, default="ALL")
