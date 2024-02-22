@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Email Template</title>
+  </head>
+  <body>
+    <p>Dear {{ recipient_name }},</p>
+    <p>I hope this email finds you well.</p>
+    <p>Please find attached the daily report of lost mode Chromebook updates from {{ site }}..</p>
+    <p>Number of lost mode devices: {{ tickets_count }}.</p>
+    <style type="text/css">
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+        color: #333333;
+      }
+
+      th,
+      td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Ticket status</th>
+          <th>Ticket subject</th>
+          <th>Item tag</th>
+          <th>Requester</th>
+          {% comment %} <th>Assignee</th> {% endcomment %}
+          <th>Requested date</th>
+          <th>Last update date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data_list %}
+          <tr>
+            <td>
+              <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_id }}</a>
+            </td>
+            <td>{{ item.ticket_status }}</td>
+            <td>
+              <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_subject }}</a>
+            </td>
+            <td>{{ item.item_tag }}</td>
+            <td>{{ item.requester }}</td>
+            <td>{{ item.requested_date }}</td>
+            <td>{{ item.updated_date }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>Thank you for your attention.</p>
+    <p>Regards,</p>
+    <p>IT Department</p>
+  </body>
+</html>
