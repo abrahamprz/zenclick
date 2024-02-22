@@ -24,6 +24,10 @@ sys_path.append(parent_parent)
 
 from apis.zendesk import ZendeskAPI  # noqa
 
+TICKET_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%m-%d-%Y"
+
 
 class Command(BaseCommand):
     """Creates a report of Chromebooks that need to be repaired."""
@@ -45,7 +49,7 @@ class Command(BaseCommand):
         self.create_report(activity_list)
         # self.logger.info(activity_list)
 
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.now().strftime(DATE_TIME_FORMAT)
         self.stdout.write(self.style.SUCCESS(f"[{timestamp}] Report created successfully."))
 
     def get_chromebooks_activity(self) -> list:
@@ -94,8 +98,8 @@ class Command(BaseCommand):
             # site_ticket["assignee"] = (
             #     self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
             # )
-            date_obj = datetime.strptime(ticket["created_at"], "%Y-%m-%dT%H:%M:%SZ")
-            site_ticket["requested_date"] = date_obj.strftime("%m-%d-%Y")
+            creation_date_obj = datetime.strptime(ticket["created_at"], TICKET_DATE_FORMAT)
+            site_ticket["requested_date"] = f"{creation_date_obj.strftime(DATE_FORMAT)}"
             site_ticket["category"] = str(
                 categories_values_and_names[
                     [category for category in ticket["custom_fields"] if category["id"] == category_field_id][0][
@@ -116,28 +120,33 @@ class Command(BaseCommand):
             try:
                 recipient_info = [
                     (p.recipient_email, p.recipient_name)
-                    for p in SchoolRecipient.objects.filter(Q(school_name=site) | Q(school_name="ALL"))
+                    for p in SchoolRecipient.objects.filter(
+                        Q(school_name=site) | Q(school_name="ALL"),
+                        email_type="REPAIR",
+                    )
                 ]
             except SchoolRecipient.DoesNotExist:
                 logger.error(f"Principal data for {site} is missing.")
                 continue
+            date_a_week_ago = (datetime.now() - timedelta(days=7)).strftime(DATE_FORMAT)
+            date_now = datetime.now().strftime(DATE_FORMAT)
             for recipient_email, recipient_name in recipient_info:
                 send_mail(
                     subject=subject.format(
                         site=site,
-                        date_seven_days_ago=(datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-                        date_today=datetime.now().strftime("%Y-%m-%d"),
+                        date_seven_days_ago=date_a_week_ago,
+                        date_today=date_now,
                     ),
                     message="",  # the message is in html format
                     from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
                     recipient_list=[recipient_email],
                     html_message=render_to_string(
-                        template_name="chromebooks_report_template.html",
+                        template_name="chromebooks_repair_report_template.html",
                         context={
                             "principal_name": recipient_name,
                             "site": site,
-                            "date_seven_days_ago": (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
-                            "date_today": datetime.now().strftime("%Y-%m-%d"),
+                            "date_seven_days_ago": date_a_week_ago,
+                            "date_today": date_now,
                             "data_list": site_tickets[site],
                             "base_url": url_base,
                             "tickets_count": len(site_tickets[site]),
