@@ -4,8 +4,8 @@ from django.db import models
 # Create your models here.
 class SchoolRecipient(models.Model):
     EMAIL_TYPES = [
-        ("GENERAL", "General report for principals"),
-        ("LOST", "Lost mode report"),
+        ("GENERAL", "Receive general report"),
+        ("LOST", "Receive lost mode report"),
     ]
 
     school_name = models.CharField(max_length=255, blank=False)
