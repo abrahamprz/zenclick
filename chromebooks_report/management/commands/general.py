@@ -122,7 +122,7 @@ class Command(BaseCommand):
                     (p.recipient_email, p.recipient_name)
                     for p in SchoolRecipient.objects.filter(
                         Q(school_name=site) | Q(school_name="ALL"),
-                        email_type="REPAIR",
+                        email_type="GENERAL",
                     )
                 ]
             except SchoolRecipient.DoesNotExist:
