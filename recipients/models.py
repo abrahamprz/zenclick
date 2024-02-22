@@ -11,7 +11,7 @@ class SchoolRecipient(models.Model):
     school_name = models.CharField(max_length=255, blank=False)
     recipient_name = models.CharField(max_length=255, blank=False)
     recipient_email = models.EmailField(blank=False)
-    email_type = models.CharField(max_length=6, choices=EMAIL_TYPES, default="GENERAL")
+    email_type = models.CharField(max_length=7, choices=EMAIL_TYPES, default="GENERAL")
 
     class Meta:
         unique_together = ("school_name", "recipient_name", "recipient_email")
