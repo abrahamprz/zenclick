@@ -79,7 +79,7 @@ migrations_local:
 migrate_local:
 	docker compose -f local.yml run --rm django python manage.py migrate
 
-general_local:
+general_report_local:
 	docker compose -f local.yml run --rm django python manage.py general
 
 collectstatic_local:
