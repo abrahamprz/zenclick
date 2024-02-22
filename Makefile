@@ -36,8 +36,8 @@ migrations:
 migrate:
 	docker compose -f production.yml run --rm django python manage.py migrate
 
-createreport:
-	docker compose -f production.yml run --rm django python manage.py createreport
+general_report:
+	docker compose -f production.yml run --rm django python manage.py general
 
 collectstatic:
 	docker compose -f production.yml run --rm django python manage.py collectstatic --no-input
@@ -79,8 +79,8 @@ migrations_local:
 migrate_local:
 	docker compose -f local.yml run --rm django python manage.py migrate
 
-createreport_local:
-	docker compose -f local.yml run --rm django python manage.py createreport
+general_local:
+	docker compose -f local.yml run --rm django python manage.py general
 
 collectstatic_local:
 	docker compose -f local.yml run --rm django python manage.py collectstatic --no-input
