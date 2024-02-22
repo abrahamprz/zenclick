@@ -84,7 +84,9 @@ class Command(BaseCommand):
 
             site_ticket = {}
             site_ticket["ticket_id"] = ticket["id"]
-            site_ticket["ticket_status"] = statuses_ids_and_names[ticket["custom_status_id"]]
+            site_ticket["ticket_status"] = (
+                str(statuses_ids_and_names[ticket["custom_status_id"]]).split("-")[-1].strip()
+            )
             site_ticket["ticket_subject"] = ticket["subject"]
             site_ticket["item_tag"] = [
                 item_tag for item_tag in ticket["custom_fields"] if item_tag["id"] == item_tag_field_id
