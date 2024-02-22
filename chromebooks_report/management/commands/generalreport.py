@@ -26,7 +26,7 @@ from apis.zendesk import ZendeskAPI  # noqa
 
 TICKET_DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-DATE_FORMAT = "%m-%d-%Y"
+DATE_FORMAT_MDY = "%m-%d-%Y"
 
 
 class Command(BaseCommand):
@@ -99,7 +99,7 @@ class Command(BaseCommand):
             #     self.zendesk_api.get_user(ticket["assignee_id"])["user"]["name"] if ticket["assignee_id"] else "NONE"
             # )
             creation_date_obj = datetime.strptime(ticket["created_at"], TICKET_DATE_FORMAT)
-            site_ticket["requested_date"] = f"{creation_date_obj.strftime(DATE_FORMAT)}"
+            site_ticket["requested_date"] = f"{creation_date_obj.strftime(DATE_FORMAT_MDY)}"
             site_ticket["category"] = str(
                 categories_values_and_names[
                     [category for category in ticket["custom_fields"] if category["id"] == category_field_id][0][
@@ -128,8 +128,8 @@ class Command(BaseCommand):
             except SchoolRecipient.DoesNotExist:
                 logger.error(f"Principal data for {site} is missing.")
                 continue
-            date_a_week_ago = (datetime.now() - timedelta(days=7)).strftime(DATE_FORMAT)
-            date_now = datetime.now().strftime(DATE_FORMAT)
+            date_a_week_ago = (datetime.now() - timedelta(days=7)).strftime(DATE_FORMAT_MDY)
+            date_now = datetime.now().strftime(DATE_FORMAT_MDY)
             for recipient_email, recipient_name in recipient_info:
                 send_mail(
                     subject=subject.format(
