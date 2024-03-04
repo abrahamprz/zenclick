@@ -141,7 +141,7 @@ class Command(BaseCommand):
                     from_email=settings.DJANGO_DEFAULT_FROM_EMAIL,
                     recipient_list=[recipient_email],
                     html_message=render_to_string(
-                        template_name="chromebooks_repair_report_template.html",
+                        template_name="chromebooks_general_report_template.html",
                         context={
                             "principal_name": recipient_name,
                             "site": site,
