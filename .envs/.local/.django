@@ -26,3 +26,12 @@ DJANGO_DEFAULT_FROM_EMAIL=<your-django_default_from_email>
 
 MAILGUN_API_KEY=<your-mailgun_api_key>
 MAILGUN_DOMAIN=<your-mailgun_domain>
+
+# GESD32 Inventory API
+# ------------------------------------------------------------------------------
+GESD32_INVENTORY_API_TOKEN=<your-gesd32_inventory_api_token>
+GESD32_INVENTORY_API_BASE_URL=<your-gesd32_inventory_api_base_url>
+
+# Stirling API
+# ------------------------------------------------------------------------------
+STIRLING_API_BASE_URL=<your-stirling_api_base_url>

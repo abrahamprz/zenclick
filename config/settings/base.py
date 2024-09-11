@@ -90,6 +90,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     "chromebooks_report",
     "recipients",
+    "agreement",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -300,7 +301,7 @@ CELERY_WORKER_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
 # django-allauth
 # ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
+ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", False)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -341,3 +342,20 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Zendesk API
+ZENDESK_API_KEY = env("ZENDESK_API_KEY")
+ZENDESK_SUBDOMAIN = env("ZENDESK_SUBDOMAIN")
+ZENDESK_EMAIL = env("ZENDESK_EMAIL")
+
+# Mailgun
+MAILGUN_API_KEY = env("MAILGUN_API_KEY")
+DJANGO_SERVER_EMAIL = env("DJANGO_SERVER_EMAIL")
+MAILGUN_DOMAIN = env("MAILGUN_DOMAIN")
+DJANGO_DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL")
+
+# GESD32 Inventory API
+GESD32_INVENTORY_API_TOKEN = env("GESD32_INVENTORY_API_TOKEN")
+GESD32_INVENTORY_API_BASE_URL = env("GESD32_INVENTORY_API_BASE_URL")
+
+# Stirling API
+STIRLING_API_BASE_URL = env("STIRLING_API_BASE_URL")
