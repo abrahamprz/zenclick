@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Agreement</h1>
+    <p>Choose the desired document and enter the tag number:</p>
+    <form method="post" action="{% url 'agreement:agreement_form' %}">
+      {% csrf_token %}
+      <div class="mb-3 row">
+        <label for="device_tag" class="col-sm-2 col-form-label">Device Tag:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="device_tag" name="device_tag" required>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="document_type" class="col-sm-2 col-form-label">Document Type:</label>
+        <div class="col-sm-10">
+          <select class="form-select" id="document_type" name="document_type" required>
+            <option value="user_agreement">Device User Agreement</option>
+            <option value="return_receipt">Device Return Receipt</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-10 offset-sm-2">
+          <button type="submit" class="btn btn-primary">Download</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock content %}

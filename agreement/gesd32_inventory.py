@@ -1,19 +1,15 @@
 from requests import get
+from django.conf import settings
 
 class GESD32InventoryAPI:
     """
     A class that provides methods for interacting with the GESD32 Inventory API.
-    
-    Attributes:
-        base_url (str): The base URL of the GESD32 Inventory API.
-        api_token (str): The API token to use for authentication.
-        headers (dict): The headers to include in the API requests.
     """
     
-    def __init__(self, base_url: str, api_token: str):
-        self.base_url = base_url
+    def __init__(self):
+        self.base_url = settings.GESD32_INVENTORY_API_BASE_URL
         self.headers = {
-            "Authorization": f"Token {api_token}",
+            "Authorization": f"Token {settings.GESD32_INVENTORY_API_TOKEN}",
         }
 
     def manage_pagination(self, initial_url: str, headers: dict, params: dict) -> dict:

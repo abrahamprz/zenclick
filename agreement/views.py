@@ -1,52 +1,45 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
-from django.conf import settings
-from os import path as os_path
-from sys import path as sys_path
-from logging import getLogger as logging_getLogger, info as logging_info
+from logging import getLogger as logging_getLogger
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 
-# ------------------------------------------------------------------------------
+from agreement.gesd32_inventory import GESD32InventoryAPI
+from agreement.stirling_pdf import StirlingAPI
+from agreement.gesd32_agreement import GESD32Agreement
 
-current = os_path.dirname(os_path.realpath(__file__))
-# adding the parent directory to the sys.path
-sys_path.append(current)
-
-# ------------------------------------------------------------------------------
-from apis.gesd32_inventory import GESD32InventoryAPI
-from apis.stirling_pdf import StirlingAPI
-from apis.gesd32_agreement import GESD32Agreement
-
-# Test function to check if the user is an admin
 def is_admin(user):
     return user.is_authenticated and user.is_staff
 
 @method_decorator(user_passes_test(is_admin), name='dispatch')
 class AgreementFormView(View):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self):
+        self.gesd32_inventory_api = GESD32InventoryAPI()
+        self.stirling_api = StirlingAPI()
+        self.agreement = GESD32Agreement(self.gesd32_inventory_api, self.stirling_api)
         self.logger = logging_getLogger(__name__)
-        self.gesd32_agreement = GESD32Agreement(
-            GESD32InventoryAPI(settings.GESD32_INVENTORY_API_BASE_URL, settings.GESD32_INVENTORY_API_TOKEN), 
-            StirlingAPI(settings.STIRLING_API_BASE_URL)
-        )
-    
+
     def get(self, request):
-        return render(request, 'agreement_form.html')
+        return render(request, 'agreement_main.html')
 
     def post(self, request):
-        tag_number = request.POST.get('tag_number')
-        # Construct the path to the Markdown template
-        template_path = os_path.join(settings.BASE_DIR, 'agreement', 'templates', 'device_user_agreement.md')
-        pdf_content = self.gesd32_agreement.generate_device_user_agreement(device_tag=tag_number, agreement_path=template_path)        
-        
-        # Return the PDF content as a file response
-        response = HttpResponse(pdf_content, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename=agreement_{tag_number}.pdf'
-        return response
+        device_tag = request.POST.get('device_tag')
+        document_type = request.POST.get('document_type')
 
-class HomeView(View):
-    def get(self, request):
-        return render(request, 'home.html')
+        # Check if the device_tag exists in the GESD32 inventory
+        inventory_response = self.gesd32_inventory_api.get_items(asset_tag=device_tag)
+        if not inventory_response['items']:
+            return HttpResponse("Device with the given tag does not exist.", status=404)
+
+        if document_type == 'user_agreement':
+            response = self.agreement.generate_device_user_agreement(device_tag)
+        elif document_type == 'return_receipt':
+            response = self.agreement.generate_device_return_receipt(device_tag)
+        else:
+            return HttpResponse("Invalid document type", status=400)
+
+        if response.status_code == 200:
+            return HttpResponse(response.content, content_type='application/pdf')
+        else:
+            return HttpResponse(response.content, content_type='application/json')
