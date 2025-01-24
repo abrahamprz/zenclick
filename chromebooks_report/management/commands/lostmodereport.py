@@ -84,6 +84,7 @@ class Command(BaseCommand):
 
             site_ticket = {}
             site_ticket["ticket_id"] = ticket["id"]
+            site_ticket["ticket_requester"] = self.zendesk_api.get_user(ticket["requester_id"])["user"]["name"]
             site_ticket["ticket_status"] = (
                 str(statuses_ids_and_names[ticket["custom_status_id"]]).split("-")[-1].strip()
             )

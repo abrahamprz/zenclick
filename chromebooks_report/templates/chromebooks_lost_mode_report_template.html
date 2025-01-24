@@ -38,6 +38,7 @@
       <thead>
         <tr>
           <th>Ticket ID</th>
+          <th>Requester</th>
           <th>Ticket status</th>
           <th>Ticket subject</th>
           <th>Item tag</th>
@@ -51,6 +52,7 @@
             <td>
               <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_id }}</a>
             </td>
+            <td>{{ item.ticket_requester }}</td>
             <td>{{ item.ticket_status }}</td>
             <td>
               <a href="{{ base_url }}{{ item.ticket_id }}">{{ item.ticket_subject }}</a>
