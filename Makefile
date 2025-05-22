@@ -1,86 +1,104 @@
-# Usage:
-# make -f Makefile <command>
+CURRENT_DIRECTORY := $(shell pwd)
 
-up:
-	docker compose -f production.yml up -d
+TESTSCOPE = .
+TESTFLAGS =
+
+help:
+		@echo "Docker Compose Help"
+		@echo "-----------------------"
+		@echo ""
+		@echo "Run tests to ensure current state is good:"
+		@echo "    make test"
+		@echo ""
+		@echo "If tests pass, add fixture data and start up the django:"
+		@echo "    make begin"
+		@echo ""
+		@echo "Really, really start over:"
+		@echo "    make clean"
+		@echo ""
+		@echo "See contents of Makefile for more targets."
+
+begin: migrate fixtures start
+
+dev:
+		@docker compose run --rm --service-ports django python manage.py runserver_plus 0.0.0.0:8000
+
+
+start:
+		@docker compose up -d
+
+stop:
+		@docker compose stop
+
+status:
+		@docker compose ps
+
+restart: stop start
+
+clean: stop
+		@docker compose rm --force
+		@find . -name \*.pyc -delete
 
 build:
-	docker compose -f production.yml build
+		@docker compose down
+		@git pull
+		@docker compose build
 
-down:
-	docker compose -f production.yml down
+build_no_pull:
+		@docker compose down
+		@docker compose build
 
-restart:
-	docker compose -f production.yml down
-	docker compose -f production.yml up -d
+rebuild: build start
 
-rebuild:
-	docker compose -f production.yml down
-	docker compose -f production.yml build
-	docker compose -f production.yml up -d
+test:
+		@docker compose run --rm django pytest ${TESTSCOPE} ${TESTFLAGS}
 
-shell:
-	docker compose -f production.yml run --rm django /bin/sh
+cov:
+		@docker compose run --rm django coverage run -m pytest
 
-# Example: make run cmd=python manage.py migrate
-run:
-	docker compose -f production.yml run --rm $(shell echo $(cmd))
-
-# Example: make manage cmd=migrate
-manage:
-	docker compose -f production.yml run --rm django python manage.py $(shell echo $(cmd))
-
-migrations:
-	docker compose -f production.yml run --rm django python manage.py makemigrations
+report:
+		@docker compose run --rm django coverage report
 
 migrate:
-	docker compose -f production.yml run --rm django python manage.py migrate
+		@docker compose run --rm django python ./manage.py migrate
 
-general_report:
-	docker compose -f production.yml run --rm django python manage.py generalreport
+makemigrations:
+		@docker compose run --rm django python ./manage.py makemigrations
 
-collectstatic:
-	docker compose -f production.yml run --rm django python manage.py collectstatic --no-input
+cli:
+		@docker compose run --rm django /bin/sh
 
-# Local commands
+tail:
+		@docker compose logs -f
 
-up_local:
-	docker compose -f local.yml up -d
+token:
+		@docker compose run --rm django python refresh_service_token.py
 
-build_local:
-	docker compose -f local.yml build
+pycharm:
+		@docker ps -a | grep -i pycharm | awk '{print $1}' | xargs docker rm
 
-down_local:
-	docker compose -f local.yml down
+get_celery_tasks:
+		@docker compose run --rm django celery inspect registered
 
-restart_local:
-	docker compose -f local.yml down
-	docker compose -f local.yml up -d
+backup:
+		@docker compose run --rm postgres backup
 
-rebuild_local:
-	docker compose -f local.yml down
-	docker compose -f local.yml build
-	docker compose -f local.yml up -d
+upload:
+		@docker compose run --rm awscli upload
 
-shell_local:
-	docker compose -f local.yml run --rm django /bin/sh
+list_backups:
+		@docker compose run --rm postgres backups
 
-# Example: make run_local cmd=python manage.py migrate
-run_local:
-	docker compose -f local.yml run --rm $(shell echo $(cmd))
+run:
+		@docker compose run --rm django python manage.py $(cmd)
 
-# Example: make manage_local cmd=migrate
-manage_local:
-	docker compose -f local.yml run --rm django python manage.py $(shell echo $(cmd))
+lint:
+		docker compose run --rm django python -m ruff check --fix
 
-migrations_local:
-	docker compose -f local.yml run --rm django python manage.py makemigrations
+format:
+		docker compose run --rm django python -m ruff format
 
-migrate_local:
-	docker compose -f local.yml run --rm django python manage.py migrate
-
-general_report_local:
-	docker compose -f local.yml run --rm django python manage.py generalreport
-
-collectstatic_local:
-	docker compose -f local.yml run --rm django python manage.py collectstatic --no-input
+.PHONY: start stop status restart clean build rebuild test cov report migrate makemigrations
+.PHONY: cli tail token sync set_homes update_counts sync_all initial_permissions pycharm update_carts
+.PHONY: sync_full build_no_pull import_employees update_employees_task update_students_task synchronize_with_ad_task
+.PHONY: backup list_backups run

@@ -24,9 +24,11 @@ class AgreementFormView(View):
         return render(request, 'agreement_main.html')
 
     def post(self, request):
-        device_tag = request.POST.get('device_tag')
+        device_tag: str = request.POST.get('device_tag')
         document_type = request.POST.get('document_type')
 
+        device_tag = device_tag.strip().upper()
+        
         # Check if the device_tag exists in the GESD32 inventory
         inventory_response = self.gesd32_inventory_api.get_items(asset_tag=device_tag)
         if not inventory_response['items']:
